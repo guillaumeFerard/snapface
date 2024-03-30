@@ -1,6 +1,7 @@
-<div class="face_snap_card">
-  <h2>{{ facesnap.title }}</h2>
-  <p>Mis en ligne le {{ facesnap.createDate }}</p>
+<div class="face_snap_card" [ngClass]="{ snapped : buttonMessage === 'Oops snaped!'}">
+  <p>{{ 47 | percent }}</p>
+  <h2>{{ facesnap.title | titlecase}}</h2>
+  <p>Mis en ligne le {{ facesnap.createDate | date : 'MMMM'}}</p>
   <img [src]="facesnap.imageUrl" />
   <p>{{ facesnap.description }}</p>
   <p *ngIf="facesnap.location">il y a une localisation avec l'image</p>
