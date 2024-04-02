@@ -1,3 +1,22 @@
-import { Routes } from '@angular/router';
+//peux aussi fonctionner pour les petites application sinon préférer créer un module routing avec le CLI
 
-export const routes: Routes = [];
+import { Routes } from '@angular/router';
+import { FaceSnapComponent } from './face-snap/face-snap.component';
+import { FaceSnapListComponent } from './face-snap-list/face-snap-list.component';
+import { MainPageComponent } from './main-page/main-page.component';
+import { SingleFaceSnapComponent } from './single-face-snap/single-face-snap.component';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: MainPageComponent,
+  },
+  {
+    path: 'facesnaps',
+    component: FaceSnapListComponent,
+  },
+  {
+    path: 'facesnaps/:id',
+    component: SingleFaceSnapComponent,
+  },
+];

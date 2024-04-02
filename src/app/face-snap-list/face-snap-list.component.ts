@@ -19,6 +19,6 @@ export class FaceSnapListComponent {
 
   }
   ngOnInit() : void {
-	this.faceSnaps = this.faceSnapService.faceSnaps
+	this.faceSnaps = this.faceSnapService.getAllFaceSnaps()
   }
 }
