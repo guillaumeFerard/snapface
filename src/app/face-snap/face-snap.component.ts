@@ -23,8 +23,6 @@ export class FaceSnapComponent implements OnInit{
     }
   
   ngOnInit() {
-    console.log(this.facesnap.id)
-
   }
 
 
