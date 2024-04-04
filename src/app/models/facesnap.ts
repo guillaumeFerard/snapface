@@ -3,7 +3,7 @@ export class FaceSnap {
     title! : string;
     description!: string;
     imageUrl!: string;
-    createDate!: Date;
+    createdDate!: Date;
     snaps!: number;
     location?: string
 }

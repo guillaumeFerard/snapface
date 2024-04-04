@@ -23,7 +23,6 @@ export class SingleFaceSnapComponent implements OnInit{
   
   ngOnInit() {
     const faceSnapId = +this.route.snapshot.params['id'];
-    console.log(faceSnapId)
     this.facesnap = this.faceSnapService.getFaceSnapById(faceSnapId)
     console.log(this.facesnap)
     this.buttonMessage = "Oh snap!"

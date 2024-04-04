@@ -3,13 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { AppComponent } from './app.component';
 import { FaceSnapComponent } from './face-snap/face-snap.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
   ],
   imports: [
     BrowserModule,
-    CommonModule // Ajoutez CommonModule si nécessaire
+    CommonModule,
+    ReactiveFormsModule // Ajoutez CommonModule si nécessaire
   ],
   providers: [],
   bootstrap: []
