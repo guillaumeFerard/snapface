@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { FaceSnap } from "../models/facesnap";
 import { error } from "node:console";
 import { FormBuilder } from "@angular/forms";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
 
 @Injectable({
     providedIn: "root"
@@ -9,36 +11,13 @@ import { FormBuilder } from "@angular/forms";
 
 export class FaceSnapService {
 
-    faceSnaps : FaceSnap[] = [
-		{
-		  id : 1,
-		  title: "API",
-		  description: "une femme API",
-		  imageUrl: "https://images.pexels.com/photos/3861943/pexels-photo-3861943.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-		  createdDate: new Date,
-		  snaps: 0
-		},
-		{
-		  id: 2,
-		  title: "carolane mais pas sûr",
-		  description: "une femme dans un champ",
-		  imageUrl: "https://media.istockphoto.com/id/976585606/nl/foto/in-de-weide.webp?s=2048x2048&w=is&k=20&c=FUiGjCWJhqKSe4YKulEmrD6e-4aBHyMCnz9rvX-QC0Q=",
-		  createdDate: new Date,
-		  snaps: 0,
-		  location: "à la campagne"
-		},
-		{
-		  id: 3,
-		  title: "Golden",
-		  description: "deux bébé golden retriever",
-		  imageUrl: "https://media.istockphoto.com/id/1406795237/nl/foto/emotional-behaviour-of-golden-retriever-puppies-sitting-isolated.webp?s=2048x2048&w=is&k=20&c=p9zbnCO6cD1xrVyN-x2C-s8ATjqS54zVQHPPWfE1esI=",
-		  createdDate: new Date,
-		  snaps: 0
-		}
-	  ]
+	constructor(private http : HttpClient) {}
+
+
+    faceSnaps : FaceSnap[] = []
 	
-	getAllFaceSnaps(): FaceSnap[] {
-		return this.faceSnaps;
+	getAllFaceSnaps(): Observable<FaceSnap[]> {
+		return this.http.get<FaceSnap[]>('http://localhost:3000/facesnaps')
 	};
 
 	getFaceSnapById(id: number): FaceSnap {
@@ -73,3 +52,30 @@ export class FaceSnapService {
 	}
 }
 
+// [
+// 	{
+// 	  id : 1,
+// 	  title: "API",
+// 	  description: "une femme API",
+// 	  imageUrl: "https://images.pexels.com/photos/3861943/pexels-photo-3861943.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+// 	  createdDate: new Date,
+// 	  snaps: 0
+// 	},
+// 	{
+// 	  id: 2,
+// 	  title: "carolane mais pas sûr",
+// 	  description: "une femme dans un champ",
+// 	  imageUrl: "https://media.istockphoto.com/id/976585606/nl/foto/in-de-weide.webp?s=2048x2048&w=is&k=20&c=FUiGjCWJhqKSe4YKulEmrD6e-4aBHyMCnz9rvX-QC0Q=",
+// 	  createdDate: new Date,
+// 	  snaps: 0,
+// 	  location: "à la campagne"
+// 	},
+// 	{
+// 	  id: 3,
+// 	  title: "Golden",
+// 	  description: "deux bébé golden retriever",
+// 	  imageUrl: "https://media.istockphoto.com/id/1406795237/nl/foto/emotional-behaviour-of-golden-retriever-puppies-sitting-isolated.webp?s=2048x2048&w=is&k=20&c=p9zbnCO6cD1xrVyN-x2C-s8ATjqS54zVQHPPWfE1esI=",
+// 	  createdDate: new Date,
+// 	  snaps: 0
+// 	}
+//   ]

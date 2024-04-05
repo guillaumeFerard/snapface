@@ -4,33 +4,39 @@ import { FaceSnapComponent } from '../face-snap/face-snap.component';
 import { CommonModule, NgFor } from '@angular/common';
 import { FaceSnapService } from '../services/facesnaps.service';
 import { Observable, interval, tap, Subject, takeUntil } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-face-snap-list',
   standalone: true,
-  imports: [FaceSnapComponent, CommonModule, NgFor ],
+  imports: [FaceSnapComponent, CommonModule, NgFor, HttpClientModule],
   templateUrl: './face-snap-list.component.html',
   styleUrl: './face-snap-list.component.scss'
 })
-export class FaceSnapListComponent implements OnInit, OnDestroy{
+export class FaceSnapListComponent implements OnInit {
 	
-  faceSnaps! : FaceSnap[]
+  faceSnaps$!: Observable<FaceSnap[]>
   messsage$! : Observable<string>
-  private destroy$! : Subject<boolean>
+ // private destroy$! : Subject<boolean>
 
 	constructor(private faceSnapService: FaceSnapService) {
 
   }
   ngOnInit() : void {
-    this.destroy$ = new Subject<boolean>();
-  	this.faceSnaps = this.faceSnapService.getAllFaceSnaps()
+
+    this.faceSnaps$ = this.faceSnapService.getAllFaceSnaps()
+
+    // this.destroy$ = new Subject<boolean>();
+  	// this.faceSnaps = this.faceSnapService.getAllFaceSnaps()
     // interval(1000).pipe(
     //   takeUntil(this.destroy$),
     //   tap(console.log)).subscribe();
   };
   // Subject = observable que l'on peut faire emettre quand on veut
-  ngOnDestroy(): void {
-      this.destroy$.next(true)
-      // la méthode next() fait émettre le subject
-  }
+//  ngOnDestroy(): void {
+    // ici à la destruction destroy$ emet un true qui stop l'interval
+//      this.destroy$.next(true)
+      // la méthode next() fait émettre le subject, ngdestroy agit à la destruction du component un genre de "componentWillUnmont"
+//  }
 }
