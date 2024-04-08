@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
 import { FaceSnap } from "../models/facesnap";
-import { error } from "node:console";
 import { FormBuilder } from "@angular/forms";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { Observable, map, switchMap, mergeMap } from "rxjs";
 
 @Injectable({
     providedIn: "root"
@@ -20,13 +19,14 @@ export class FaceSnapService {
 		return this.http.get<FaceSnap[]>('http://localhost:3000/facesnaps')
 	};
 
-	getFaceSnapById(id: number): FaceSnap {
-		const facesnap = this.faceSnaps.find(faceSnap => faceSnap.id === id)
-		if (facesnap) {
-			return facesnap;
-		} else { 
-			throw new Error('snap not found !');
-		}
+	getFaceSnapById(id: number): Observable<FaceSnap> {
+		return this.http.get<FaceSnap>(`http://localhost:3000/facesnaps/${id}`)
+		// const facesnap = this.faceSnaps.find(faceSnap => faceSnap.id === id)
+		// if (facesnap) {
+		// 	return facesnap;
+		// } else { 
+		// 	throw new Error('snap not found !');
+		// }
 	};
 
 	snapSwitchById(faceSnap: FaceSnap, textMessage : string) : string {
@@ -40,17 +40,45 @@ export class FaceSnapService {
 			return text = 'Oh snap!';
 		}
 	};
+	snapFaceSnapById(faceSnapId: number, snapType: 'snap' | 'unsnap'): Observable<FaceSnap> {
+		return this.getFaceSnapById(faceSnapId).pipe(
+			map(faceSnap => ({ 
+				...faceSnap,
+				snaps: faceSnap.snaps + (snapType == 'snap' ? 1 : -1)
+			})), switchMap(updatedFaceSnap => this.http.put<FaceSnap>(`http://localhost:3000/facesnaps/${faceSnapId}`, updatedFaceSnap))
+		);
 
-	addFaceSnap(formValue : {title: string, description: string, imageUrl: string, location?: string}) : void {
-		const faceSnap: FaceSnap = {
-			...formValue,
-			createdDate : new Date(),
-			snaps: 0,
-			id: this.faceSnaps[this.faceSnaps.length - 1].id + 1
-		}
-		this.faceSnaps.push(faceSnap)
 	}
+
+
+	addFaceSnap(formValue : {title: string, description: string, imageUrl: string, location?: string}) : Observable<FaceSnap> {
+		
+		let maxId = 0;
+		return this.getAllFaceSnaps().pipe(
+			mergeMap(faceSnaps => {
+				faceSnaps.forEach(faceSnap => {
+				  if (faceSnap.id > maxId) {
+					maxId = faceSnap.id;
+				  }
+				  }); 
+				  const faceSnap: FaceSnap = {
+					...formValue,
+					createdDate : new Date(),
+					snaps: 0,
+					id: maxId + 1
+				  };
+
+				//
+				return this.http.post<FaceSnap>('http://localhost:3000/facesnaps', faceSnap);
+				})
+			  );
+	  	    }
+	
 }
+
+
+
+
 
 // [
 // 	{

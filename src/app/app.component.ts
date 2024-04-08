@@ -16,8 +16,7 @@ import { Observable, interval, take, map, tap, mergeMap, delay, of } from 'rxjs'
 })
 export class AppComponent implements OnInit{
 
-  yellowTrainsCalled = 0;
-  redTrainsCalled = 0;
+
   
 	ngOnInit() {
 		

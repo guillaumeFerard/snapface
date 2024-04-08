@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, LOCALE_ID, getModuleFactory, input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FaceSnap } from '../models/facesnap';
-import { CommonModule, NgIf, registerLocaleData } from '@angular/common';
-import * as fr from '@angular/common/locales/fr'
+import { CommonModule, NgIf } from '@angular/common';
 import { FaceSnapService } from '../services/facesnaps.service';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 
