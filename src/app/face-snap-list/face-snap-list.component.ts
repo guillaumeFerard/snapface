@@ -4,12 +4,14 @@ import { FaceSnapComponent } from '../face-snap/face-snap.component';
 import { CommonModule, NgFor } from '@angular/common';
 import { FaceSnapService } from '../services/facesnaps.service';
 import { Observable, interval, tap, Subject, takeUntil } from 'rxjs';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpInterceptor } from '@angular/common/http';
+import { httpInterceptorProviders } from '../../interceptors';
 
 
 @Component({
   selector: 'app-face-snap-list',
   standalone: true,
+  providers: [httpInterceptorProviders],
   imports: [FaceSnapComponent, CommonModule, NgFor, HttpClientModule],
   templateUrl: './face-snap-list.component.html',
   styleUrl: './face-snap-list.component.scss'
@@ -20,7 +22,8 @@ export class FaceSnapListComponent implements OnInit {
   messsage$! : Observable<string>
  // private destroy$! : Subject<boolean>
 
-	constructor(private faceSnapService: FaceSnapService) {
+	constructor(private faceSnapService: FaceSnapService
+  ) {
 
   }
   ngOnInit() : void {

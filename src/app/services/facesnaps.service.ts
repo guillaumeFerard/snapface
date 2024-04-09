@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { FaceSnap } from "../models/facesnap";
-import { FormBuilder } from "@angular/forms";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { Observable, map, switchMap, mergeMap } from "rxjs";
+import { Observable, map, switchMap, mergeMap, tap } from "rxjs";
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: "root"
@@ -10,10 +10,10 @@ import { Observable, map, switchMap, mergeMap } from "rxjs";
 
 export class FaceSnapService {
 
-	constructor(private http : HttpClient) {}
+	constructor(
+		private http : HttpClient,
+		private router : Router) {}
 
-
-    faceSnaps : FaceSnap[] = []
 	
 	getAllFaceSnaps(): Observable<FaceSnap[]> {
 		return this.http.get<FaceSnap[]>('http://localhost:3000/facesnaps')
@@ -21,12 +21,6 @@ export class FaceSnapService {
 
 	getFaceSnapById(id: number): Observable<FaceSnap> {
 		return this.http.get<FaceSnap>(`http://localhost:3000/facesnaps/${id}`)
-		// const facesnap = this.faceSnaps.find(faceSnap => faceSnap.id === id)
-		// if (facesnap) {
-		// 	return facesnap;
-		// } else { 
-		// 	throw new Error('snap not found !');
-		// }
 	};
 
 	snapSwitchById(faceSnap: FaceSnap, textMessage : string) : string {
@@ -40,6 +34,7 @@ export class FaceSnapService {
 			return text = 'Oh snap!';
 		}
 	};
+
 	snapFaceSnapById(faceSnapId: number, snapType: 'snap' | 'unsnap'): Observable<FaceSnap> {
 		return this.getFaceSnapById(faceSnapId).pipe(
 			map(faceSnap => ({ 
@@ -49,7 +44,6 @@ export class FaceSnapService {
 		);
 
 	}
-
 
 	addFaceSnap(formValue : {title: string, description: string, imageUrl: string, location?: string}) : Observable<FaceSnap> {
 		
@@ -68,42 +62,12 @@ export class FaceSnapService {
 					id: maxId + 1
 				  };
 
-				//
-				return this.http.post<FaceSnap>('http://localhost:3000/facesnaps', faceSnap);
+				// envoi la requete post et redirigve la list des snaps seulement quand la requête a été effectuée, j'utilise le tap car opérateur sans action sur l'observable
+				return this.http.post<FaceSnap>('http://localhost:3000/facesnaps', faceSnap).pipe(
+					tap(() => this.router.navigateByUrl('facesnaps'))
+				);
 				})
 			  );
 	  	    }
 	
 }
-
-
-
-
-
-// [
-// 	{
-// 	  id : 1,
-// 	  title: "API",
-// 	  description: "une femme API",
-// 	  imageUrl: "https://images.pexels.com/photos/3861943/pexels-photo-3861943.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-// 	  createdDate: new Date,
-// 	  snaps: 0
-// 	},
-// 	{
-// 	  id: 2,
-// 	  title: "carolane mais pas sûr",
-// 	  description: "une femme dans un champ",
-// 	  imageUrl: "https://media.istockphoto.com/id/976585606/nl/foto/in-de-weide.webp?s=2048x2048&w=is&k=20&c=FUiGjCWJhqKSe4YKulEmrD6e-4aBHyMCnz9rvX-QC0Q=",
-// 	  createdDate: new Date,
-// 	  snaps: 0,
-// 	  location: "à la campagne"
-// 	},
-// 	{
-// 	  id: 3,
-// 	  title: "Golden",
-// 	  description: "deux bébé golden retriever",
-// 	  imageUrl: "https://media.istockphoto.com/id/1406795237/nl/foto/emotional-behaviour-of-golden-retriever-puppies-sitting-isolated.webp?s=2048x2048&w=is&k=20&c=p9zbnCO6cD1xrVyN-x2C-s8ATjqS54zVQHPPWfE1esI=",
-// 	  createdDate: new Date,
-// 	  snaps: 0
-// 	}
-//   ]

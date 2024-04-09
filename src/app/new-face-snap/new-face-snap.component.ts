@@ -4,7 +4,6 @@ import {
   FormsModule,
   ReactiveFormsModule,
   FormGroup,
-  Validator,
   Validators,
 } from '@angular/forms';
 import { Observable, map } from 'rxjs';
@@ -28,7 +27,6 @@ export class NewFaceSnapComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private faceSnapService: FaceSnapService,
-    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +61,5 @@ export class NewFaceSnapComponent implements OnInit {
   }
   onSubmitForm(): void {
     this.faceSnapService.addFaceSnap(this.snapForm.value).subscribe();
-    this.router.navigateByUrl('facesnaps');
   }
 }

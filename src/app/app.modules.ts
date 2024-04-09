@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { AppComponent } from './app.component';
-import { FaceSnapComponent } from './face-snap/face-snap.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { httpInterceptorProviders } from '../interceptors';
 
 @NgModule({
   declarations: [
@@ -15,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     ReactiveFormsModule // Ajoutez CommonModule si nécessaire
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: []
 })
 export class AppModule { }
